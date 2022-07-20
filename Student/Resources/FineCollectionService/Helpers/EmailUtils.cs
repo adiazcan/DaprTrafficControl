@@ -1,6 +1,3 @@
-using System;
-using FineCollectionService.Models;
-
 namespace FineCollectionService.Helpers
 {
     public class EmailUtils

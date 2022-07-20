@@ -1,5 +1,3 @@
-using System;
-
 namespace FineCollectionService.DomainServices
 {
     public class HardCodedFineCalculator : IFineCalculator

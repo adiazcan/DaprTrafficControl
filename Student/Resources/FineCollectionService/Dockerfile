@@ -1,19 +1,21 @@
-# https://hub.docker.com/_/microsoft-dotnet
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS build-env
+WORKDIR /app
 
-WORKDIR /source
-
-# copy csproj and restore as distinct layers
-COPY *.csproj ./
+# Copy necessary files and restore as distinct layer
+COPY FineCollectionService.csproj ./
 RUN dotnet restore
 
-# copy everything else and build app
+# Copy everything else and build
 COPY . ./
-RUN dotnet publish -c release -o /app --no-restore
+RUN dotnet publish -c Release -o out FineCollectionService.csproj
 
-# final stage/image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
-WORKDIR /app
-COPY --from=build /app ./
-EXPOSE 6002
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim
+COPY --from=build-env /app/out .
+
+# Expose ports
+EXPOSE 6001/tcp
+ENV ASPNETCORE_URLS http://*:6001
+
+# Start
 ENTRYPOINT ["dotnet", "FineCollectionService.dll"]
