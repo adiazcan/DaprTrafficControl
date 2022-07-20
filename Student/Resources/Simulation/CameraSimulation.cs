@@ -1,11 +1,3 @@
-using System;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Simulation.Events;
-using Simulation.Proxies;
-
 namespace Simulation
 {
     public class CameraSimulation
