@@ -123,7 +123,8 @@ With the Dapr pub/sub building block, you use a [topic](https://docs.microsoft.c
 1. You'll use this template to publish a message from the TrafficControlService to the `collectfine` topic in the `FineCollectionService`. The new call will instruct Dapr to use the newly-created pub/sub component named `pubsub`. The Dapr sidecar for the TrafficControlService will run on HTTP port `3600`. Replace the hardcoded URL in the `VehicleExit` method with the following call to the Dapr pub/sub API:
 
     ```csharp
-    await _httpClient.PostAsync("http://localhost:3600/v1.0/publish/pubsub/collectfine", message);
+    var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3600";
+    await _httpClient.PostAsync("http://localhost:{daprHttpPort}/v1.0/publish/pubsub/collectfine", message);
     ```
 
 Keep in mind that `TrafficControlService` is no longer coupled to `FineCollectionService`. Instead, `TrafficControlService` publishes the message to its Dapr sidecar service on port 3600. The sidecar is then responsible for executing the publish command using the Dapr pub/sub building block and component.
