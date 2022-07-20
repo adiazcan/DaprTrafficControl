@@ -90,8 +90,9 @@ First you're going to change the code so it calls the Dapr sidecar:
     ```csharp
     public async Task<VehicleInfo> GetVehicleInfo(string licenseNumber)
     {
+        string daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3602";
         return await _httpClient.GetFromJsonAsync<VehicleInfo>(
-            $"http://localhost:3601/v1.0/invoke/vehicleregistrationservice/method/vehicleinfo/{licenseNumber}");
+            $"http://localhost:{daprHttpPort}/v1.0/invoke/vehicleregistrationservice/method/vehicleinfo/{licenseNumber}");
     }
     ```
 
