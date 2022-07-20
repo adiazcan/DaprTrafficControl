@@ -174,7 +174,7 @@ First stop the simulation:
 
 Now you'll change the code in the `FineCollectionService` to use the Dapr SDK `HttpClient` integration to call the `VehicleRegistrationService`. The `HttpClient` integration allows you to use the .NET Core `HttpClient` object to make service calls, while the SDK ensures that calls are routed through the Dapr sidecar.
 
-1.  Open the file `Resources/FineCollectionService/Startup.cs` in VS Code.
+1.  Open the file `Resources/FineCollectionService/Program.cs` in VS Code.
 
 1.  Add a `using` statement in this file to make sure you can use the Dapr client:
 
@@ -182,21 +182,20 @@ Now you'll change the code in the `FineCollectionService` to use the Dapr SDK `H
     using Dapr.Client;
     ```
 
-1.  The `ConfigureServices` method, contains these two lines of code which register the .NET `HttpClient` and the `VehicleRegistrationService` proxy (which uses the `HttpClient`) with dependency injection:
+1.  The Prgram contains these two lines of code which register the .NET `HttpClient` and the `VehicleRegistrationService` proxy (which uses the `HttpClient`) with dependency injection:
 
     ```csharp
-    // add service proxies
-    services.AddHttpClient();
-    services.AddSingleton<VehicleRegistrationService>();
+    builder.Services.AddHttpClient();
+    builder.Services.AddSingleton<VehicleRegistrationService>();
     ```
 
 1.  Replace these two lines with with the following lines:
 
     ```csharp
-    // add service proxies
-    services.AddSingleton<VehicleRegistrationService>(_ => 
+    var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3602";
+    builder.Services.AddSingleton<VehicleRegistrationService>(_ => 
         new VehicleRegistrationService(DaprClient.CreateInvokeHttpClient(
-            "vehicleregistrationservice", "http://localhost:3601")));
+            "vehicleregistrationservice", $"http://localhost:{daprHttpPort}")));
     ```
 
    With this snippet, you use the `DaprClient` to create an `HttpClient` instance to implement service invocation. You specify the `app-id` of the service you want to communicate with. You also need to specify the address of the Dapr sidecar for the `FineCollectionService` as it's not using the default Dapr HTTP port (3500). The `HttpClient` instance created by Dapr is explicitly passed into the constructor of the `VehicleRegistrationService` proxy.
