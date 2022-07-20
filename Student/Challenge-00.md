@@ -18,7 +18,7 @@ Your coach will provide you with a `Resources.zip` package file that contains th
 Install all the prerequisites listed below and make sure they're working correctly:
 
   - Git ([download](https://git-scm.com/))
-  - .NET 5 SDK ([download](https://dotnet.microsoft.com/download/dotnet/5.0))
+  - .NET 6 SDK ([download](https://dotnet.microsoft.com/download/dotnet/6.0))
   - Visual Studio Code ([download](https://code.visualstudio.com/download)) with the following extensions installed:
     - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
     - [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
@@ -35,12 +35,12 @@ Make sure the following minimum software versions are installed by executing the
 
 | Software             | Version | Command Line       |
 | -------------------- | ------- | ------------------ |
-| Dapr runtime version | v1.2.2  | ```dapr --version```   |
-| Dapr CLI version     | v1.2.0  | ```dapr --version```   |
-| DotNet version       | 5.0.302 | ```dotnet --version``` |
-| azure-cli            | 2.24.0  | ```az --version```     |
+| Dapr runtime version | v1.8.0  | ```dapr --version```   |
+| Dapr CLI version     | v1.7.1  | ```dapr --version```   |
+| DotNet version       | 6.0.302 | ```dotnet --version``` |
+| azure-cli            | 2.36.0  | ```az --version```     |
 
-### Create Azure Resources
+### Create Azure Resources (don't create it yet, wait until a lab that need it)
 
 This hack's setup files will create the following resources in your Azure Resource Group. Make sure you can create the following:
 

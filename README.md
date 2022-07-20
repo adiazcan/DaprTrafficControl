@@ -9,7 +9,7 @@ This hack contains several hands-on challenges that will introduce you to [Dapr]
 - Bindings
 - Secrets management
 
-As Dapr can run on a variety of hosts, you'll start by running Dapr in self-hosted mode on your computer. Then, you'll deploy the Dapr application to run in Azure Kubernetes Service.
+As Dapr can run on a variety of hosts, you'll start by running Dapr in self-hosted mode on your computer. Then, you'll deploy the Dapr application to run in Azure Kubernetes Service and/or Azure Container Apps.
 
 ## Learning Objectives
 
@@ -43,7 +43,7 @@ When the car passes an exit-camera, another photo and timestamp are registered. 
 
 ## Prerequisites
 - Git ([download](https://git-scm.com/))
-- .NET 5 SDK ([download](https://dotnet.microsoft.com/download/dotnet/5.0))
+- .NET 6 SDK ([download](https://dotnet.microsoft.com/download/dotnet/6.0))
 - Visual Studio Code ([download](https://code.visualstudio.com/download)) with the following extensions installed:
   - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
   - [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
@@ -71,3 +71,4 @@ When the car passes an exit-camera, another photo and timestamp are registered. 
 - Rob Vettor
 - Edwin van Wijk
 - Chandrasekar B
+- Alberto Diaz
