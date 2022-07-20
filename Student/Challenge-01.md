@@ -32,6 +32,7 @@ Run the TrafficControl application & services locally.
 - Run the services in VS Code using a ***dotnet run*** command.
   - Using a single VS Code instance, open a [Terminal window](https://code.visualstudio.com/docs/editor/integrated-terminal) **for each service**.
 - If you encounter an error, double-check to ensure that you have correctly installed all the [prerequisites](../README.md#Prerequisites)!
+- Alternative, you can use [Tye](https://github.com/dotnet/tye) to run all the services using the tye.yaml definition file. 
 
 ## Learning Resources
 
