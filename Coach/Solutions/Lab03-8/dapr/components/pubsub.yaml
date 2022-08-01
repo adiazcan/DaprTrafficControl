@@ -1,0 +1,14 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+  namespace: daprpub.servicebus.windows.net
+spec:
+  type: pubsub.azure.servicebus
+  version: v1
+  metadata:
+  - name: connectionString
+    value: "Endpoint=sb://daprpub.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=pUkVMczeKAXKl0wNDD4Mv6QXQVWkV4+9+dClKF3eAjg="
+scopes:
+- trafficcontrolservice
+- finecollectionservice
