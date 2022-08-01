@@ -197,8 +197,8 @@ Now you will add code to the `TrafficControlService` so that it uses the Dapr st
             await _httpClient.PostAsJsonAsync(
                 $"http://localhost:{daprHttpPort}/v1.0/state/{DAPR_STORE_NAME}",
             state);    
+        }
     }
-}
     ```
 
 Now you need to register the new repository with the .NET Core dependency-injection container.
