@@ -375,7 +375,7 @@ In this step, you'll simplify pub/sub messaging with the Dapr SDK for .NET. Firs
     await daprClient.PublishEventAsync("pubsub", "collectfine", speedingViolation);
     ```
 
-1. Open the file `Resources/TrafficControlService/Startup.cs`.
+1. Open the file `Resources/TrafficControlService/Program.cs`.
 
 1. As the service now uses the `DaprClient`, it needs to be registered with .NET Core dependency injection container. Add the following line to the `ConfigureServices` method to register the `DaprClient` with dependency injection:
 
