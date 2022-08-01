@@ -102,8 +102,9 @@ Now you will add code to the `TrafficControlService` so that it uses the Dapr st
         }
     };
     
+    var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3600";
     await _httpClient.PostAsJsonAsync(
-        $"http://localhost:3600/v1.0/state/{DAPR_STORE_NAME}",
+        $"http://localhost:{daprHttpPort}/v1.0/state/{DAPR_STORE_NAME}",
         state);
     ```
 
