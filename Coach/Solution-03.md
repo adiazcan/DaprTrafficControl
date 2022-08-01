@@ -377,12 +377,14 @@ In this step, you'll simplify pub/sub messaging with the Dapr SDK for .NET. Firs
 
 1. Open the file `Resources/TrafficControlService/Program.cs`.
 
-1. As the service now uses the `DaprClient`, it needs to be registered with .NET Core dependency injection container. Add the following line to the `ConfigureServices` method to register the `DaprClient` with dependency injection:
+1. As the service now uses the `DaprClient`, it needs to be registered with .NET Core dependency injection container. Add the following line to register the `DaprClient` with dependency injection:
 
     ```csharp
-    services.AddDaprClient(builder => builder
-              .UseHttpEndpoint($"http://localhost:3600")
-              .UseGrpcEndpoint($"http://localhost:60000"));
+   var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3600";
+   var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "60000";
+   builder.Services.AddDaprClient(builder => builder
+             .UseHttpEndpoint($"http://localhost:{daprHttpPort}")
+             .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}"));
     ```
 
     Note that the specified ports register the Dapr client with the sidecar service for `TrafficControlService`.
