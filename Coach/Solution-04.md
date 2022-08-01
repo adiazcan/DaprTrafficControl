@@ -61,21 +61,20 @@ Now you will add code to the `TrafficControlService` so that it uses the Dapr st
     using System.Threading.Tasks;
     using TrafficControlService.Models;
     
-    namespace TrafficControlService.Repositories
-    {
-        public class DaprVehicleStateRepository : IVehicleStateRepository
-        {
-            private const string DAPR_STORE_NAME = "statestore";
-
-            public async Task<VehicleState?> GetVehicleStateAsync(string licenseNumber)
-            {
-                throw new NotImplementedException();
-            }
+    namespace TrafficControlService.Repositories;
     
-            public async Task SaveVehicleStateAsync(VehicleState vehicleState)
-            {
-                throw new NotImplementedException();
-            }
+    public class DaprVehicleStateRepository : IVehicleStateRepository
+    {
+        private const string DAPR_STORE_NAME = "statestore";
+
+        public async Task<VehicleState?> GetVehicleStateAsync(string licenseNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task SaveVehicleStateAsync(VehicleState vehicleState)
+        {
+            throw new NotImplementedException();
         }
     }
     ```
@@ -128,57 +127,60 @@ Now you will add code to the `TrafficControlService` so that it uses the Dapr st
     using System.Threading.Tasks;
     using TrafficControlService.Models;
 
-    namespace TrafficControlService.Repositories
+    namespace TrafficControlService.Repositories;
+
+    public class DaprVehicleStateRepository : IVehicleStateRepository
     {
-        public class DaprVehicleStateRepository : IVehicleStateRepository
+        private const string DAPR_STORE_NAME = "statestore";
+
+        private readonly HttpClient _httpClient;
+
+        public DaprVehicleStateRepository(HttpClient httpClient)
         {
-            private const string DAPR_STORE_NAME = "statestore";
-            private readonly HttpClient _httpClient;
-
-            public DaprVehicleStateRepository(HttpClient httpClient)
-            {
-                _httpClient = httpClient;
-            }
-
-            public async Task<VehicleState> GetVehicleStateAsync(string licenseNumber)
-            {
-                var state = await _httpClient.GetFromJsonAsync<VehicleState>(
-                    $"http://localhost:3600/v1.0/state/{DAPR_STORE_NAME}/{licenseNumber}");
-                return state;
-            }
-
-            public async Task SaveVehicleStateAsync(VehicleState vehicleState)
-            {
-                var state = new[]
-                {
-                    new {
-                        key = vehicleState.LicenseNumber,
-                        value = vehicleState
-                    }
-                };
-
-                await _httpClient.PostAsJsonAsync(
-                    $"http://localhost:3600/v1.0/state/{DAPR_STORE_NAME}",                   state);
-                }
-            }
+            _httpClient = httpClient;
         }
+
+        public async Task<VehicleState?> GetVehicleStateAsync(string licenseNumber)
+        {
+            var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3600";
+            var state = await _httpClient.GetFromJsonAsync<VehicleState>(
+                $"http://localhost:{daprHttpPort}/v1.0/state/{DAPR_STORE_NAME}/{licenseNumber}");
+
+            return state;    
+        }
+
+        public async Task SaveVehicleStateAsync(VehicleState vehicleState)
+        {
+            var state = new[]
+            {
+                new { 
+                    key = vehicleState.LicenseNumber,
+                    value = vehicleState
+                }
+            };
+
+            var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3600";
+            await _httpClient.PostAsJsonAsync(
+                $"http://localhost:{daprHttpPort}/v1.0/state/{DAPR_STORE_NAME}",
+            state);    
     }
+}
     ```
 
 Now you need to register the new repository with the .NET Core dependency-injection container.
 
-1.  Open the file `Resources/TrafficControlService/Startup.cs`.
+1.  Open the file `Resources/TrafficControlService/Program.cs`.
 
-1.  In the `ConfigureServices` method, the old `IVehicleStateRepository` implementation is registered with dependency injection:
+1.  The old `IVehicleStateRepository` implementation is registered with dependency injection:
 
     ```csharp
-    services.AddSingleton<IVehicleStateRepository, InMemoryVehicleStateRepository>();
+    builder.Services.AddSingleton<IVehicleStateRepository, InMemoryVehicleStateRepository>();
     ```
 
 1.  Replace the `InMemoryVehicleStateRepository` with your new `DaprVehicleStateRepository` concrete class:
 
     ```csharp
-    services.AddSingleton<IVehicleStateRepository, DaprVehicleStateRepository>();
+    builder.Services.AddSingleton<IVehicleStateRepository, DaprVehicleStateRepository>();
     ```
 
 1.  Open the terminal window in VS Code and make sure the current folder is `Resources/TrafficControlService`.
