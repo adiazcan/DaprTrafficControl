@@ -67,7 +67,7 @@ Now you will add code to the `TrafficControlService` so that it uses the Dapr st
         {
             private const string DAPR_STORE_NAME = "statestore";
 
-            public async Task<VehicleState> GetVehicleStateAsync(string licenseNumber)
+            public async Task<VehicleState?> GetVehicleStateAsync(string licenseNumber)
             {
                 throw new NotImplementedException();
             }
