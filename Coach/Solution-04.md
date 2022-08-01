@@ -113,8 +113,10 @@ Now you will add code to the `TrafficControlService` so that it uses the Dapr st
  1. The URL template for getting data using the Dapr state API is: `http://localhost:<daprPort>/v1.0/state/<statestore-name>/<key>`. You'll use this API to retrieve the VehicleState. Replace the implementation of the `GetVehicleStateAsync` method with the following code:
 
     ```csharp
+    var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3600";
     var state = await _httpClient.GetFromJsonAsync<VehicleState>(
-        $"http://localhost:3600/v1.0/state/{DAPR_STORE_NAME}/{licenseNumber}");
+        $"http://localhost:{daprHttpPort}/v1.0/state/{DAPR_STORE_NAME}/{licenseNumber}");
+
     return state;
     ```
 
