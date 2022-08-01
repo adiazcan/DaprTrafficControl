@@ -3,7 +3,7 @@
       "TestApp": {
         "commandName": "Project",
         "launchBrowser": false,
-        "applicationUrl": "https://localhost:6002",
+        "applicationUrl": "http://localhost:6002",
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         }
