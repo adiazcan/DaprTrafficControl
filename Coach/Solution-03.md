@@ -438,19 +438,19 @@ Next, you'll change the `FineCollectionService` that receives messages. The Dapr
 
     *The **"pubsub"** argument passed to this attribute refers to the name of the Dapr pub/sub component to use. *"collectfine"* is the name of the topic.*
 
-Now you need to make sure that Dapr is aware of this controller and knows the pub/sub topics to which it subscribes. To do so, Dapr will call your service on a default endpoint to retrieve the subscriptions. To make sure your service handles this request and returns the correct information, you need to add some statements to the `Startup` class:
+Now you need to make sure that Dapr is aware of this controller and knows the pub/sub topics to which it subscribes. To do so, Dapr will call your service on a default endpoint to retrieve the subscriptions. To make sure your service handles this request and returns the correct information, you need to add some statements to the `Program` file:
 
-1. Open the file `Resources/FineCollectionService/Startup.cs` in VS Code.
+1. Open the file `Resources/FineCollectionService/Program.cs` in VS Code.
 
 1. Append `AddDapr` to the `AddControllers` line in the `ConfigureServices` method:
 
     ```csharp
-    services.AddControllers().AddDapr();
+    builder.Services.AddControllers().AddDapr();
     ```
 
     *The `AddDapr` method adds Dapr integration for ASP.NET MVC.*
 
-1. As you saw earlier, Dapr uses the *Cloud Event* message-format standard when sending messages over pub/sub. To make sure cloud events are automatically unwrapped, add the following directive just after the call to `app.UseRouting()` in the `Configure` method:
+1. As you saw earlier, Dapr uses the *Cloud Event* message-format standard when sending messages over pub/sub. To make sure cloud events are automatically unwrapped, add the following directive just before the call to `app.MapControllers()` in the Program.cs file:
 
     ```csharp
     app.UseCloudEvents();
@@ -458,14 +458,13 @@ Now you need to make sure that Dapr is aware of this controller and knows the pu
 
     *The call to UseCloudEvents adds CloudEvents middleware into to the ASP.NET Core middleware pipeline. This middleware will unwrap requests that use the CloudEvents structured format, so the receiving method can read the event payload directly.*
 
-1. To register every controller that uses pub/sub as a subscriber, add a call to `endpoints.MapSubscribeHandler()` to the lambda passed into `app.UseEndpoints` in the `Configure` method. It should look like this:
+1. To register every controller that uses pub/sub as a subscriber, add a call to `app.MapSubscribeHandler()` just after then `app.MapControllers()`. It should look like this:
 
     ```csharp
-    app.UseEndpoints(endpoints =>
-    {
-      endpoints.MapSubscribeHandler();
-      endpoints.MapControllers();
-    });
+   // configure routing
+   app.UseCloudEvents();
+   app.MapControllers();
+   app.MapSubscribeHandler();
     ```
 
    *The MapSubscriberHandler() extension automatically implements the `/dapr/subscribe` endpoint that you added earlier. It collects all controller methods decorated with the Dapr `Topic` attribute and returns the corresponding subscription.*
