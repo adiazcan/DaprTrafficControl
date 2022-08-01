@@ -4,6 +4,40 @@
 
 ## Notes & Guidance
 
+### Step 0: Restore the pubsub component in order to use Rabbitmq
+
+First, you need to update the existing pubsub management configuration file:
+
+1.  Open the file `Resources/dapr/components/pubsub.yaml` in VS Code.
+
+1.  Use the pubsub management building block:
+
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: pubsub
+    spec:
+      type: pubsub.rabbitmq
+      version: v1
+      metadata:
+      - name: host
+        value: "amqp://localhost:5672"
+      - name: durable
+        value: "false"
+      - name: deletedWhenUnused
+        value: "false"
+      - name: autoAck
+        value: "false"
+      - name: reconnectWait
+        value: "0"
+      - name: concurrency
+        value: parallel
+    scopes:
+      - trafficcontrolservice
+      - finecollectionservice
+    ```
+
 ### Step 1: Use the Dapr state management building block
 
 First, you need to update the existing state management configuration file:
