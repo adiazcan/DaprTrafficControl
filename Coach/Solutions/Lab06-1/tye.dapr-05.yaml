@@ -1,0 +1,44 @@
+name: traffic-control
+extensions:
+- name: dapr
+  components-path: "./dapr/components/"
+
+services:
+- name: FineCollectionService
+  project: FineCollectionService/FineCollectionService.csproj
+  bindings:
+    - protocol: http
+      port: 6001
+
+- name: Simulation
+  project: Simulation/Simulation.csproj
+
+- name: TrafficControlService
+  project: TrafficControlService/TrafficControlService.csproj
+  bindings:
+    - protocol: http
+      port: 6000
+
+- name: VehicleRegistrationService
+  project: VehicleRegistrationService/VehicleRegistrationService.csproj
+  bindings:
+    - protocol: http
+      port: 6002
+
+- name: dtc-rabbitmq
+  image: rabbitmq:3-management
+  bindings:
+    - port: 15672
+      name: admin-web
+    - port: 5672
+      name: rabbitmq
+
+- name: dtc-maildev
+  image: maildev/maildev:latest
+  bindings: 
+    - port: 4000
+      containerPort: 1080
+      name: web-client
+    - port: 4025
+      containerPort: 1025
+      name: rabbitmq

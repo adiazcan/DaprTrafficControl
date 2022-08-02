@@ -1,0 +1,23 @@
+name: traffic-control
+services:
+
+- name: FineCollectionService
+  project: FineCollectionService/FineCollectionService.csproj
+  bindings:
+    - protocol: http
+      port: 6001
+
+- name: Simulation
+  project: Simulation/Simulation.csproj
+
+- name: TrafficControlService
+  project: TrafficControlService/TrafficControlService.csproj
+  bindings:
+    - protocol: http
+      port: 6000
+
+- name: VehicleRegistrationService
+  project: VehicleRegistrationService/VehicleRegistrationService.csproj
+  bindings:
+    - protocol: http
+      port: 6002
