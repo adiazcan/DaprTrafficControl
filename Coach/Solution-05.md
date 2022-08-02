@@ -19,7 +19,7 @@ Start by running the SMTP server:
 1.  Start a MailDev SMTP server by entering the following command:
 
     ```shell
-    docker run -d -p 4000:80 -p 4025:25 --name dtc-maildev maildev/maildev:latest
+    docker run -d -p 4000:1080 -p 4025:1025 --name dtc-maildev maildev/maildev:latest
     ```
 
 This will pull the docker image `maildev/maildev:latest` from Docker Hub and start it. The name of the container will be `dtc-maildev`. The server will be listening for connections on port `4025` for SMTP traffic and port `4000` for HTTP traffic. This last port is where the inbox web app will run for inspecting the emails.
