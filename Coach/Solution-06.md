@@ -165,7 +165,7 @@ The proxy uses HTTP to send the message to the `TrafficControlService`. You will
 
 1.  Paste the following code into this file:
 
-    ```csharp
+  ```csharp
    using System.Net.Mqtt;
 
    namespace Simulation.Proxies;
@@ -200,9 +200,8 @@ The proxy uses HTTP to send the message to the `TrafficControlService`. You will
            var message = new MqttApplicationMessage("trafficcontrol/exitcam", Encoding.UTF8.GetBytes(eventJson));
            _client.PublishAsync(message, MqttQualityOfService.AtMostOnce).Wait();
        }
-   }
-   
-    ```
+   } 
+  ```
 
 1.  Inspect the new code.
 
