@@ -110,9 +110,12 @@ You will enhance the `FineCollectionService` so that it uses the Dapr SMTP outpu
 1.  Add the following code to the `ConfigureServices` method (just above the code to register the `VehicleRegistrationService` proxy) to register DaprClient:
 
     ```csharp
-    services.AddDaprClient(builder => builder
-        .UseHttpEndpoint($"http://localhost:3601")
-        .UseGrpcEndpoint($"http://localhost:60001"));
+    var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3600"; //remove if you already declared it
+    var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "60000";
+
+    builder.Services.AddDaprClient(builder => builder
+              .UseHttpEndpoint($"http://localhost:{daprHttpPort}")
+              .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}"));
     ```
 
 1.  Go back to the terminal window in VS Code and make sure the current folder is `Resources/FineCollectionService`.
