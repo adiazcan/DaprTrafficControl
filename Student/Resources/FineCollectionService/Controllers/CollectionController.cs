@@ -19,7 +19,16 @@ public class CollectionController : ControllerBase
         // set finecalculator component license-key
         if (_fineCalculatorLicenseKey == null)
         {
-            _fineCalculatorLicenseKey = "HX783-K2L7V-CRJ4A-5PN1G";
+            bool runningInACA = !String.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONTAINER_APP_HOSTNAME"));
+
+            if (runningInACA)
+            {
+                _fineCalculatorLicenseKey = Environment.GetEnvironmentVariable("finecalculator.licensekey");
+            }
+            else 
+            {
+                _fineCalculatorLicenseKey = "HX783-K2L7V-CRJ4A-5PN1G";
+            }
         }
     }
 
